@@ -4,6 +4,12 @@ services:
       dockerfile: Dockerfile
       context: .
       # Only will build development stage from our dockerfile
+      RUNNING
+      
+      
+      
+      
+      
       target: development
     volumes:
       - .:/usr/src/app
