@@ -1,28 +1,47 @@
-FROM node:14-alpine As development
+
+
+FROM node:18-alpine3.16 As development
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
 
-RUN npm install --only=development
+COPY --chown=node:node package*.json ./
 
-COPY . .
+RUN npm ci
+
+COPY --chown=node:node . .
+
+RUN npm run prisma:generate
+
+USER node
+
+
+
+FROM node:18-alpine3.16 As build
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package*.json ./
+
+
+COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
+
+COPY --chown=node:node . .
 
 RUN npm run build
 
-FROM node:14-alpine As production
+ENV NODE_ENV production
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
 
-WORKDIR /usr/src/app
+RUN npm ci --only=production && npm cache clean --force
 
-COPY package*.json ./
+USER node
 
-RUN npm install --only=production
 
-COPY . .
 
-COPY --from=development /usr/src/app/dist ./dist
+FROM node:18-alpine3.16 As production
 
-CMD ["node", "dist/main"]
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+
+CMD [ "node", "dist/main.js" ]
