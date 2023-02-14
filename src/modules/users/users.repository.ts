@@ -14,7 +14,8 @@ export class UsersRepository {
             data: {
                 email: data.email,
                 password: data.password,
-                name: data.name
+                name: data.name,
+                image: data.image,
             }
         })
 
@@ -63,5 +64,8 @@ export class UsersRepository {
             where: { id: id },
         })
     }
+
+
+
 
 }

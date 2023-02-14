@@ -15,4 +15,7 @@ export class EditUserDTO {
 
     @IsOptional()
     password: string;
+
+    @IsOptional()
+    image: string;
 }

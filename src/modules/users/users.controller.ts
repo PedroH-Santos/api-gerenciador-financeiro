@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from "@nestjs/common";
 import { UsersRepository } from "./users.repository";
 import { CreateUserDTO } from "./dto/createUser.dto";
 import { EditUserDTO } from "./dto/editUser.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { UploadedFile } from "@nestjs/common/decorators";
 
 @Controller('/users')
 export class UsersController {
@@ -13,6 +15,15 @@ export class UsersController {
         return { 
             message: "Usuário criado com sucesso  ",
             user,
+        }
+    }
+
+    @Post('/upload/image')
+    @UseInterceptors(FileInterceptor('file'))
+    async uploadImage(@UploadedFile() file: Express.Multer.File) {
+        return {
+            message: "Imagem do usuário cadastrada com sucesso",
+            file,
         }
     }
 
