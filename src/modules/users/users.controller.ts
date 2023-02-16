@@ -4,6 +4,7 @@ import { CreateUserDTO } from "./dto/createUser.dto";
 import { EditUserDTO } from "./dto/editUser.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { UploadedFile } from "@nestjs/common/decorators";
+import { multerUploadOptions } from "src/config/multer.config";
 
 @Controller('/users')
 export class UsersController {
@@ -19,7 +20,7 @@ export class UsersController {
     }
 
     @Post('/upload/image')
-    @UseInterceptors(FileInterceptor('file'))
+    @UseInterceptors(FileInterceptor('file', multerUploadOptions))
     async uploadImage(@UploadedFile() file: Express.Multer.File) {
         return {
             message: "Imagem do usuário cadastrada com sucesso",
