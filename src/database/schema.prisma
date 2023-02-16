@@ -19,4 +19,4 @@ model Users {
   createdAt   DateTime  @default(now())
 
   @@map("users")
-}
+} 

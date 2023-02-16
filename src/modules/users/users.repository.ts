@@ -16,8 +16,8 @@ export class UsersRepository {
                 password: data.password,
                 name: data.name,
                 image: data.image,
-            }
-        })
+            } 
+        }) 
 
         return userCreated;
     }
