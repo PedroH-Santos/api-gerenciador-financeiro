@@ -10,6 +10,29 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+
+enum StatusRegister {
+    WITHDRAW
+    DEPOSIT
+}
+
+enum TypeAccount {
+  PARCEL
+  RECURRENT
+}
+
+enum OriginAccount {
+  GROUP
+  INDIVIDUAL
+}
+
+enum StatusAccount {
+  PAYED
+  PENDING
+  CANCELED
+}
+
 model Users {
   id      String   @id  @default(uuid()) 
   name    String
@@ -20,3 +43,24 @@ model Users {
 
   @@map("users")
 } 
+
+model Registers {
+  id String @id @default(uuid())
+  name String 
+  price Float
+  status StatusRegister @default(DEPOSIT)
+
+  @@map("registers")
+}
+
+model Accounts {
+  id String @id @default(uuid())
+  name String
+  price Float
+  dueDate DateTime 
+  type TypeAccount @default(RECURRENT)
+  origin OriginAccount @default(INDIVIDUAL)
+  installments Int 
+  status StatusAccount @default(PENDING)
+  @@map("accounts")
+}

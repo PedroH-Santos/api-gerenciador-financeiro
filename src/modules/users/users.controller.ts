@@ -40,7 +40,7 @@ export class UsersController {
     async edit(@Param('id') id: string, @Body() data: EditUserDTO){
         const user = await this.usersRepository.edit(id,data);
         return {
-            message: "Usuário modificado com sucesso",
+            message: "Usuário alterado com sucesso",
             user,
         }
     }
