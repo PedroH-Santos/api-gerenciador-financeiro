@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { CreateRegisterDTO } from "./dto/createRegister.dto";
 import { EditRegisterDTO } from "./dto/editRegister.dto";
 import { RegistersRepository } from "./registers.repository";
+import { FilterRegisterDTO } from "./dto/filterRegister.dto";
 
 
 
@@ -39,6 +40,14 @@ export class RegisterController {
         await this.registersRepository.delete(id);
         return {
             message: "Registro deletado com sucesso"
+        }
+    }
+
+    @Get("/filter")
+    async filter(@Query() data: FilterRegisterDTO) {
+        const registers = await this.registersRepository.filter(data);
+        return {
+            registers,
         }
     }
 }

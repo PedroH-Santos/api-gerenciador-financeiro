@@ -3,6 +3,7 @@ import { Accounts } from '@prisma/client';
 import { PrismaService } from '../../database/service/prisma.service';
 import { CreateAccountDTO } from './dto/createAccount.dto';
 import { EditAccountDTO } from './dto/editAccount.dto';
+import { FilterAccountDTO } from './dto/filterAccount.dto';
 
 
 
@@ -71,5 +72,27 @@ export class AccountRepository {
 
 
 
+    async filter(data: FilterAccountDTO): Promise<Accounts[]> {
+        const accounts = await this.prismaService.accounts.findMany({
+            where: {
+                name: {
+                    contains: data.name
+                },
+                dueDate: {
+                    equals: data.dueDate,
+                },
+                status: {
+                    equals: data.status
+                },
+                origin: {
+                    equals: data.origin
+                },
+                type: {
+                    equals: data.type
+                }
+            },
+        })
+        return accounts;
+    }
 
 }

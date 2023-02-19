@@ -1,4 +1,4 @@
-import { IsDate, IsEmail, IsEnum, IsNotEmpty, IsNumber } from "class-validator";
+import { IsDate, IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumber } from "class-validator";
 import { TypeAccount,OriginAccount,StatusAccount } from "@prisma/client";
 
 
@@ -12,7 +12,7 @@ export class CreateAccountDTO {
     price: number;
 
     @IsNotEmpty()
-    @IsDate()
+    @IsDateString()
     dueDate: string;
 
     @IsNotEmpty()

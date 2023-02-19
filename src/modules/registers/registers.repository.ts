@@ -3,6 +3,7 @@ import { PrismaService } from '../../database/service/prisma.service';
 import { Registers } from '@prisma/client';
 import { CreateRegisterDTO } from './dto/createRegister.dto';
 import { EditRegisterDTO } from './dto/editRegister.dto';
+import { FilterRegisterDTO } from './dto/filterRegister.dto';
 
 
 
@@ -66,6 +67,20 @@ export class RegistersRepository {
         })
     }
 
+
+    async filter(data: FilterRegisterDTO): Promise<Registers[]> {
+        const registers = await this.prismaService.registers.findMany({
+            where: { 
+                name: {
+                    contains: data.name
+                },
+                createdAt: {
+                    equals: data.createdAt
+                }
+             },
+        })
+        return registers;
+    }
 
 
 

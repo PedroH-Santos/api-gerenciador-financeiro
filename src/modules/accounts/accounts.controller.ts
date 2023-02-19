@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseInterceptors } from "@nestjs/common";
 import { AccountRepository } from "./accounts.repository";
 import { CreateAccountDTO } from "./dto/createAccount.dto";
 import { EditAccountDTO } from "./dto/editAccount.dto";
+import { FilterAccountDTO } from "./dto/filterAccount.dto";
 
 @Controller('/accounts')
 export class AccountsController {
@@ -38,6 +39,13 @@ export class AccountsController {
         await this.accountRepository.delete(id);
         return {
             message: "Conta deletada com sucesso"
+        }
+    }
+    @Get("/filter")
+    async filter(@Query() data: FilterAccountDTO) {
+        const accounts = await this.accountRepository.filter(data);
+        return {
+            accounts,
         }
     }
 }

@@ -49,7 +49,7 @@ model Registers {
   name String 
   price Float
   status StatusRegister @default(DEPOSIT)
-
+  createdAt   DateTime  @default(now())
   @@map("registers")
 }
 
@@ -62,5 +62,15 @@ model Accounts {
   origin OriginAccount @default(INDIVIDUAL)
   installments Int 
   status StatusAccount @default(PENDING)
+  createdAt   DateTime  @default(now())
   @@map("accounts")
+}
+
+model Groups {
+  id String @id @default(uuid())
+  name String 
+  creator String
+  code String @unique
+  createdAt   DateTime  @default(now())
+  @@map("groups")
 }

@@ -1,15 +1,11 @@
-import { IsDate, IsDateString, IsEnum, IsNumber, IsOptional } from "class-validator";
+import { IsDate, IsDateString, IsEnum, IsOptional } from "class-validator";
 import { TypeAccount, OriginAccount, StatusAccount } from "@prisma/client";
 
 
-export class EditAccountDTO {
+export class FilterAccountDTO {
 
     @IsOptional()
     name: string;
-
-    @IsOptional()
-    @IsNumber()
-    price: number;
 
     @IsOptional()
     @IsDateString()
@@ -22,9 +18,6 @@ export class EditAccountDTO {
     @IsOptional()
     @IsEnum(OriginAccount)
     origin: OriginAccount;
-
-    @IsOptional()
-    installments: number;
 
     @IsOptional()
     @IsEnum(StatusAccount)
