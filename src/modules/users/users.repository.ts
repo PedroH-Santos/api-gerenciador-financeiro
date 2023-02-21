@@ -3,17 +3,18 @@ import { PrismaService } from '../../database/service/prisma.service';
 import { CreateUserDTO } from './dto/createUser.dto';
 import { Users } from '@prisma/client';
 import { EditUserDTO } from './dto/editUser.dto';
-
+import { hash } from "bcryptjs";
 
 @Injectable()
 export class UsersRepository {
     constructor(private prismaService: PrismaService) { }
 
     async create(data: CreateUserDTO) : Promise<Users> {
+        const passwordHash = await hash(data.password,8);
         const userCreated = await this.prismaService.users.create({
             data: {
                 email: data.email,
-                password: data.password,
+                password: passwordHash,
                 name: data.name,
                 image: data.image,
             } 
@@ -31,6 +32,13 @@ export class UsersRepository {
     async findOne(id: string): Promise<Users> {
         const user = await this.prismaService.users.findFirst({
             where: { id: id },
+        });
+        return user;
+    }
+
+    async findByEmail(email: string): Promise<Users> {
+        const user = await this.prismaService.users.findFirst({
+            where: { email: email },
         });
         return user;
     }
