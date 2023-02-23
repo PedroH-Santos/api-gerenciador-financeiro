@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets = ["native","debian-openssl-1.1.x","debian-openssl-3.0.x","linux-musl","linux-musl-openssl-3.0.x"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-musl", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -11,10 +11,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum StatusRegister {
-    WITHDRAW
-    DEPOSIT
+  WITHDRAW
+  DEPOSIT
 }
 
 enum TypeAccount {
@@ -34,43 +33,57 @@ enum StatusAccount {
 }
 
 model Users {
-  id      String   @id  @default(uuid()) 
-  name    String
-  email     String @unique
-  password  String  
-  image String 
-  createdAt   DateTime  @default(now())
+  id          String       @id @default(uuid())
+  name        String
+  email       String       @unique
+  password    String
+  image       String
+  createdAt   DateTime     @default(now())
+  UsersTokens UsersTokens?
 
   @@map("users")
-} 
+}
+
+model UsersTokens {
+  id           String   @id @default(uuid())
+  userId       String   @unique()
+  user         Users    @relation(fields: [userId], references: [id])
+  refreshToken String
+  createdAt    DateTime @default(now())
+
+  @@map("usersTokens")
+}
 
 model Registers {
-  id String @id @default(uuid())
-  name String 
-  price Float
-  status StatusRegister @default(DEPOSIT)
-  createdAt   DateTime  @default(now())
+  id        String         @id @default(uuid())
+  name      String
+  price     Float
+  status    StatusRegister @default(DEPOSIT)
+  createdAt DateTime       @default(now())
+
   @@map("registers")
 }
 
 model Accounts {
-  id String @id @default(uuid())
-  name String
-  price Float
-  dueDate DateTime 
-  type TypeAccount @default(RECURRENT)
-  origin OriginAccount @default(INDIVIDUAL)
-  installments Int 
-  status StatusAccount @default(PENDING)
-  createdAt   DateTime  @default(now())
+  id           String        @id @default(uuid())
+  name         String
+  price        Float
+  dueDate      DateTime
+  type         TypeAccount   @default(RECURRENT)
+  origin       OriginAccount @default(INDIVIDUAL)
+  installments Int
+  status       StatusAccount @default(PENDING)
+  createdAt    DateTime      @default(now())
+
   @@map("accounts")
 }
 
 model Groups {
-  id String @id @default(uuid())
-  name String 
-  creator String
-  code String @unique
-  createdAt   DateTime  @default(now())
+  id        String   @id @default(uuid())
+  name      String
+  creator   String
+  code      String   @unique
+  createdAt DateTime @default(now())
+
   @@map("groups")
 }

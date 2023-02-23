@@ -3,7 +3,6 @@ import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { AuthenticateService } from '../authenticate.service';
-import { LoginDTO } from '../dto/login.dto';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -19,6 +18,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
                 error: 'Usuário ou Senha Incorreta'
             }, HttpStatus.BAD_REQUEST);
         }
-        return user;
+        return user; 
     }
 }
