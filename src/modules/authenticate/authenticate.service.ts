@@ -1,10 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { UsersRepository } from "../users/users.repository";
 import { JwtService } from "@nestjs/jwt";
 import { compare } from "bcryptjs";
 import { configAuth } from "src/config/auth.config";
-import { LoginDTO } from "./dto/login.dto";
-import { Users } from "@prisma/client";
+
 
 
 @Injectable()
@@ -23,23 +22,18 @@ export class AuthenticateService {
             return null;
         }
 
-        return { userId: user.id, username: user.name };
+        return { userId: user.id, userEmail: user.email, userName: user.name };
 
 
     }
 
-    async login(data: any){
-        const token = this.jwtService.sign(
-            { 
-                name: data.name, 
-                id: data.id, 
-                email: data.email
-            },
-            {
-                secret: configAuth.secret,
-                expiresIn: configAuth.expiresIn
-            }
-        )
+    async login(user: any){
+        const payload = {    
+            sub: user.userId,
+            username: user.userEmail
+        }
+        
+        const token = this.jwtService.sign(payload);
 
         return {
             access_token: token,

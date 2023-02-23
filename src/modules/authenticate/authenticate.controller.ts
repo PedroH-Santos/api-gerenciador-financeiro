@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
-import { LoginDTO } from "./dto/login.dto";
+import {  Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
 import { AuthenticateService } from "./authenticate.service";
 import { LocalAuthGuard } from "./strategies/local.guard";
 import { JwtAuthGuard } from "./strategies/jwt.guard";
@@ -13,8 +12,8 @@ export class AuthenticateController {
 
     @UseGuards(LocalAuthGuard)
     @Post()
-    async login(@Body() data: LoginDTO) {
-        const token = this.authenticateService.login(data);
+    async login(@Request() req) {
+        const token = this.authenticateService.login(req.user);
         return token;
     }
 
