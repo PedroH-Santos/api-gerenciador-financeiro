@@ -14,20 +14,20 @@ export class AuthenticateController {
 
     @UseGuards(LocalAuthGuard)
     @Post()
-    async login(@Request() req) {
+    async login(@Request() req: any) {
         const token = this.authenticateService.login(req.user);
         return token;
     }
 
     @UseGuards(JwtAuthGuard)
     @Get('/profile')
-    getProfile(@Request() req) {
+    getProfile(@Request() req: any) {
         return req.user;
     }
 
     @UseGuards(RefreshTokenGuard)
     @Get('/refresh')
-    getRefreshToken(@Request() req) {
+    getRefreshToken(@Request() req: any  ) {
         const tokens = this.authenticateService.refreshToken(req.user);
         return tokens;
     }

@@ -5,22 +5,20 @@ import { CreateGroupDTO } from './dto/createGroup.dto';
 import { generate } from 'shortid';
 import { EditGroupDTO } from './dto/editGroup.dto';
 import { FilterGroupsDTO } from './dto/filterGroups.dto';
+import { UserTokenDTO } from '../authenticate/dto/userToken.dto';
 
 
 @Injectable()
 export class GroupRepository {
     constructor(private prismaService: PrismaService) { }
 
-    async create(data: CreateGroupDTO): Promise<Groups> {
+    async create(data: CreateGroupDTO, user: UserTokenDTO): Promise<Groups> {
         const code  = generate();
-        /* QUANDO FOR AUTENTICADO DÁ PARA PEGAR O VALOR DO USUÁRIO PELA AUTENTICACAO*/
-        const creator = "Pedro";
-
         const groupCreated = await this.prismaService.groups.create({
             data: {
                 name: data.name,
                 code: code,
-                creator: creator
+                creatorId: user.userId
       
             }
         })
@@ -84,6 +82,8 @@ export class GroupRepository {
         })
         return groups;
     }
+
+
 
 
 

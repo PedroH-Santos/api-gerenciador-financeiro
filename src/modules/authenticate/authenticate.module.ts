@@ -8,7 +8,6 @@ import { UsersRepository } from '../users/users.repository';
 import { UsersModule } from '../users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { configAuth } from 'src/config/auth.config';
 import { LocalStrategy } from './strategies/auth.strategy';
 import { JwtStrategy } from './strategies/token.strategy';
 import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
@@ -21,7 +20,7 @@ import { AuthenticateRepository } from './authenticate.repository';
         PassportModule,
         JwtModule.register({})],
     controllers: [AuthenticateController],
-    providers: [AuthenticateService, LocalStrategy, JwtStrategy,RefreshTokenStrategy, UsersRepository, PrismaService, AuthenticateRepository],
+    providers: [AuthenticateService, LocalStrategy, JwtStrategy,RefreshTokenStrategy, PrismaService, AuthenticateRepository],
    
 })
 export class AuthenticateModule { }

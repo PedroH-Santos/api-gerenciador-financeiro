@@ -9,7 +9,7 @@ export class EditGroupDTO {
     name: string;
 
     @IsOptional()
-    creator: string;
+    creatorId: string;
 
 
 }

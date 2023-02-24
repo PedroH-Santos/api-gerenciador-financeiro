@@ -33,13 +33,15 @@ enum StatusAccount {
 }
 
 model Users {
-  id          String       @id @default(uuid())
-  name        String
-  email       String       @unique
-  password    String
-  image       String
-  createdAt   DateTime     @default(now())
-  UsersTokens UsersTokens?
+  id            String          @id @default(uuid())
+  name          String
+  email         String          @unique
+  password      String
+  image         String
+  createdAt     DateTime        @default(now())
+  UsersTokens   UsersTokens?
+  groups        Groups[]
+  GroupsMembers GroupsMembers[]
 
   @@map("users")
 }
@@ -52,6 +54,29 @@ model UsersTokens {
   createdAt    DateTime @default(now())
 
   @@map("usersTokens")
+}
+
+model GroupsMembers {
+  id        String   @id @default(uuid())
+  userId    String
+  user      Users    @relation(fields: [userId], references: [id])
+  groupId   String
+  group     Groups   @relation(fields: [groupId], references: [id])
+  createdAt DateTime @default(now())
+  @@map("groupsMembers")
+}
+
+model Groups {
+  id        String @id @default(uuid())
+  name      String
+  creatorId String
+  creator   Users  @relation(fields: [creatorId], references: [id])
+
+  code          String          @unique
+  createdAt     DateTime        @default(now())
+  GroupsMembers GroupsMembers[]
+
+  @@map("groups")
 }
 
 model Registers {
@@ -76,14 +101,4 @@ model Accounts {
   createdAt    DateTime      @default(now())
 
   @@map("accounts")
-}
-
-model Groups {
-  id        String   @id @default(uuid())
-  name      String
-  creator   String
-  code      String   @unique
-  createdAt DateTime @default(now())
-
-  @@map("groups")
 }

@@ -1,24 +1,27 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
 import { CreateGroupDTO } from "./dto/createGroup.dto";
 import { EditGroupDTO } from "./dto/editGroup.dto";
 import { GroupRepository } from "./groups.repository";
 import { FilterGroupsDTO } from "./dto/filterGroups.dto";
+import { JwtAuthGuard } from "../authenticate/strategies/token.guard";
 
 
 
 
+@UseGuards(JwtAuthGuard)
 @Controller('/groups')
 export class GroupController {
     constructor(private groupsRepository: GroupRepository){}
 
     @Post()
-    async create(@Body() data: CreateGroupDTO) {
-        const group = await this.groupsRepository.create(data);
+    async create(@Body() data: CreateGroupDTO, @Request() req: any) {
+        const group = await this.groupsRepository.create(data,req.user);
         return {
-            message: "Grupo criado com sucesso  ",
+            message: "Grupo criado com sucesso",
             group,
         }
     }
+
     @Get()
     async list() {
         const groups = await this.groupsRepository.listAll();

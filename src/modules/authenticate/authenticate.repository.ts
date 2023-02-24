@@ -1,8 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../../database/service/prisma.service';
 import { UsersTokens } from '@prisma/client';
-import { CreateRefreshTokenDTO } from './dto/createRefreshToken.dto';
-import { CreateRegisterDTO } from '../registers/dto/createRegister.dto';
+
 
 
 
