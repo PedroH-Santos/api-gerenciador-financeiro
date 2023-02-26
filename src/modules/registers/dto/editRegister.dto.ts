@@ -16,4 +16,6 @@ export class EditRegisterDTO {
     @IsEnum(StatusRegister)
     status: StatusRegister;
 
+    @IsOptional()
+    groupId: string;
 }

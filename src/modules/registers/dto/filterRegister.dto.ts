@@ -13,6 +13,8 @@ export class FilterRegisterDTO {
     createdAt: string;
 
 
+    @IsOptional()
+    groupId: string;
 
 
 }

@@ -1,28 +1,26 @@
-import { IsDate, IsDateString, IsEnum, IsOptional } from "class-validator";
-import { TypeAccount, OriginAccount, StatusAccount } from "@prisma/client";
+import { IsDate, IsDateString, IsEnum, IsNumber, IsOptional } from "class-validator";
+import { TypeAccount,  StatusAccount } from "@prisma/client";
 
 
 export class FilterAccountDTO {
 
     @IsOptional()
-    name: string;
+    name?: string;
 
     @IsOptional()
-    @IsDateString()
-    dueDate: string;
+    @IsNumber()
+    dayDueDate?: number;
 
     @IsOptional()
     @IsEnum(TypeAccount)
-    type: TypeAccount;
+    type?: TypeAccount;
 
-    @IsOptional()
-    @IsEnum(OriginAccount)
-    origin: OriginAccount;
 
     @IsOptional()
     @IsEnum(StatusAccount)
-    status: StatusAccount;
+    status?: StatusAccount;
 
 
-
+    @IsOptional()
+    groupId?: string;
 }

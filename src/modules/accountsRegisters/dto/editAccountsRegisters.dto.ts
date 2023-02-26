@@ -2,7 +2,7 @@ import { IsDate, IsDateString, IsEnum, IsNumber, IsOptional } from "class-valida
 import { TypeAccount, StatusAccount } from "@prisma/client";
 
 
-export class EditAccountDTO {
+export class EditAccountsRegistersDTO {
 
     @IsOptional()
     name: string;
@@ -16,12 +16,6 @@ export class EditAccountDTO {
     dueDate: string;
 
     @IsOptional()
-    @IsEnum(TypeAccount)
-    type: TypeAccount;
-
-
-
-    @IsOptional()
     installments: number;
 
     @IsOptional()
@@ -29,6 +23,6 @@ export class EditAccountDTO {
     status: StatusAccount;
 
     @IsOptional()
-    groupId: string;
+    accountId: string;
 
 }

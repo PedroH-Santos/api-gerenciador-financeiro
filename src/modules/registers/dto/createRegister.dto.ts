@@ -1,5 +1,5 @@
 import { StatusRegister } from "@prisma/client";
-import { IsEmail, IsEnum, IsNotEmpty, IsNumber } from "class-validator";
+import { IsEmail, IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 
 
@@ -15,6 +15,10 @@ export class CreateRegisterDTO {
     @IsNotEmpty()
     @IsEnum(StatusRegister)
     status: StatusRegister;
+
+
+    @IsNotEmpty()
+    groupId: string;
 
 
 }

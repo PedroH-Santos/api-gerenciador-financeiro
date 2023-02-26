@@ -16,7 +16,8 @@ export class RegistersRepository {
             data: {
                 name: data.name,
                 price: data.price,
-                status: data.status
+                status: data.status,
+                groupId: data.groupId
       
             }
         })
@@ -76,6 +77,9 @@ export class RegistersRepository {
                 },
                 createdAt: {
                     equals: data.createdAt
+                },
+                groupId: {
+                    equals: data.groupId
                 }
              },
         })

@@ -2,32 +2,25 @@ import { IsDate, IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumber } from "cla
 import { TypeAccount,StatusAccount } from "@prisma/client";
 
 
-export class CreateAccountDTO {
+export class CreateAccountsRegistersDTO {
 
-    @IsNotEmpty()
-    name: string;
 
     @IsNotEmpty()
     @IsNumber()
     price: number;
 
     @IsNotEmpty()
+    @IsDateString()
+    dueDate: string;
+
+    @IsNotEmpty()
     @IsNumber()
-    dayDueDate: number;
-
-    @IsNotEmpty()
-    @IsEnum(TypeAccount)
-    type: TypeAccount;
-
-    @IsNotEmpty()
     installments: number;
 
-    @IsNotEmpty()
-    @IsEnum(StatusAccount)
-    status: StatusAccount;
 
+    
     @IsNotEmpty()
-    groupId: string;
+    accountId: string;
 
 
 }

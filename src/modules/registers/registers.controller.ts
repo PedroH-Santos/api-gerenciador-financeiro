@@ -19,7 +19,7 @@ export class RegisterController {
         }
     }
     @Get()
-    async list() {
+    async list(){
         const registers = await this.registersRepository.listAll();
         return {
             registers,

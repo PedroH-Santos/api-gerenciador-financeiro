@@ -21,15 +21,12 @@ enum TypeAccount {
   RECURRENT
 }
 
-enum OriginAccount {
-  GROUP
-  INDIVIDUAL
-}
+
 
 enum StatusAccount {
   PAYED
   PENDING
-  CANCELED
+  LATED
 }
 
 model Users {
@@ -71,10 +68,11 @@ model Groups {
   name      String
   creatorId String
   creator   Users  @relation(fields: [creatorId], references: [id])
-
   code          String          @unique
   createdAt     DateTime        @default(now())
   GroupsMembers GroupsMembers[]
+  registers Registers[]
+  accounts Accounts[]
 
   @@map("groups")
 }
@@ -84,19 +82,40 @@ model Registers {
   name      String
   price     Float
   status    StatusRegister @default(DEPOSIT)
+  groupId String 
+  group Groups @relation(fields: [groupId], references: [id])
+  
   createdAt DateTime       @default(now())
+
 
   @@map("registers")
 }
+
+
+model AccountsRegisters {
+  id           String        @id @default(uuid())
+  price        Float
+  dueDate      DateTime
+  status       StatusAccount @default(PENDING)
+  accountId String
+  accounts Accounts @relation(fields: [accountId], references: [id])
+  createdAt    DateTime      @default(now())
+
+  @@map("accountsRegisters")
+}
+
 
 model Accounts {
   id           String        @id @default(uuid())
   name         String
   price        Float
-  dueDate      DateTime
-  type         TypeAccount   @default(RECURRENT)
-  origin       OriginAccount @default(INDIVIDUAL)
+  dayDueDate      Int
+  priceInstallments Float
   installments Int
+  registers AccountsRegisters[]
+  groupId String
+  group Groups @relation(fields: [groupId], references: [id])
+  type         TypeAccount   @default(RECURRENT)
   status       StatusAccount @default(PENDING)
   createdAt    DateTime      @default(now())
 

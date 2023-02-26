@@ -4,6 +4,8 @@ import { PrismaService } from '../../database/service/prisma.service';
 import { CreateAccountDTO } from './dto/createAccount.dto';
 import { EditAccountDTO } from './dto/editAccount.dto';
 import { FilterAccountDTO } from './dto/filterAccount.dto';
+import { AccountRegistersRepository } from '../accountsRegisters/accountsRegisters.repository';
+import { CreateAccountsRegistersDTO } from '../accountsRegisters/dto/CreateAccountsRegisters.dto';
 
 
 
@@ -11,16 +13,20 @@ import { FilterAccountDTO } from './dto/filterAccount.dto';
 export class AccountRepository {
     constructor(private prismaService: PrismaService) { }
 
+
+
+
     async create(data: CreateAccountDTO) : Promise<Accounts> {
         const accountCreated = await this.prismaService.accounts.create({
             data: {
                 name: data.name,
-                dueDate: data.dueDate,
+                priceInstallments: data.price / data.installments,
                 installments: data.installments,
                 price: data.price,
-                origin: data.origin,
                 status: data.status,
-                type: data.type
+                type: data.type,
+                groupId: data.groupId,
+                dayDueDate: data.dayDueDate 
             } 
         }) 
 
@@ -78,17 +84,17 @@ export class AccountRepository {
                 name: {
                     contains: data.name
                 },
-                dueDate: {
-                    equals: data.dueDate,
+                dayDueDate: {
+                    equals: data.dayDueDate,
                 },
                 status: {
                     equals: data.status
                 },
-                origin: {
-                    equals: data.origin
-                },
                 type: {
                     equals: data.type
+                },
+                groupId: {
+                    equals: data.groupId
                 }
             },
         })
