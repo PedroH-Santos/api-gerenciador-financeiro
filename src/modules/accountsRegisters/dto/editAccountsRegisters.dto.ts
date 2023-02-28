@@ -5,24 +5,24 @@ import { TypeAccount, StatusAccount } from "@prisma/client";
 export class EditAccountsRegistersDTO {
 
     @IsOptional()
-    name: string;
+    name?: string;
 
     @IsOptional()
     @IsNumber()
-    price: number;
+    price?: number;
 
     @IsOptional()
     @IsDateString()
-    dueDate: string;
+    dueDate?: string;
 
     @IsOptional()
-    installments: number;
+    installments?: number;
 
     @IsOptional()
     @IsEnum(StatusAccount)
-    status: StatusAccount;
+    status?: StatusAccount;
 
     @IsOptional()
-    accountId: string;
+    accountId?: string;
 
 }

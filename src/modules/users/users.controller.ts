@@ -3,8 +3,9 @@ import { UsersRepository } from "./users.repository";
 import { CreateUserDTO } from "./dto/createUser.dto";
 import { EditUserDTO } from "./dto/editUser.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { UploadedFile } from "@nestjs/common/decorators";
+import { UploadedFile, UseGuards } from "@nestjs/common/decorators";
 import { multerUploadOptions } from "src/config/multer.config";
+import { JwtAuthGuard } from "../authenticate/strategies/token.guard";
 
 @Controller('/users')
 export class UsersController {
@@ -28,6 +29,7 @@ export class UsersController {
         }
     }
 
+    @UseGuards(JwtAuthGuard)
     @Get()
     async list(){
         const users = await this.usersRepository.listAll();
@@ -35,7 +37,7 @@ export class UsersController {
             users,
         }
     } 
-
+    @UseGuards(JwtAuthGuard)
     @Put(":id") 
     async edit(@Param('id') id: string, @Body() data: EditUserDTO){
         const user = await this.usersRepository.edit(id,data);
@@ -44,7 +46,7 @@ export class UsersController {
             user,
         }
     }
-
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: string) {
         await this.usersRepository.delete(id);

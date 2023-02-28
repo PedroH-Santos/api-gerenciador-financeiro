@@ -1,11 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Accounts, AccountsRegisters } from '@prisma/client';
+import { Accounts, AccountsRegisters, StatusAccount } from '@prisma/client';
 import { PrismaService } from '../../database/service/prisma.service';
 import { CreateAccountsRegistersDTO } from './dto/CreateAccountsRegisters.dto';
 import { EditAccountsRegistersDTO } from './dto/editAccountsRegisters.dto';
 import { FilterAccountsRegistersDTO } from './dto/filterAccount.dto';
 import { FilterAccountDTO } from '../accounts/dto/filterAccount.dto';
 import { AccountRepository } from '../accounts/accounts.repository';
+import { EditAccountDTO } from '../accounts/dto/editAccount.dto';
 
 
 
@@ -53,8 +54,22 @@ export class AccountRegistersRepository {
     }
 
 
-    async listAll(groupId: string): Promise<AccountsRegisters[]> {
+    async listAll(): Promise<AccountsRegisters[]> {
         const accountsRegister = await this.prismaService.accountsRegisters.findMany();
+        return accountsRegister;
+    }
+
+    async listByGroup(groupId: string): Promise<AccountsRegisters[]>{
+        const accountsRegister = await this.prismaService.accountsRegisters.findMany({
+            include: {
+                accounts: true,
+            },
+            where: {
+                accounts: {
+                    groupId: groupId,
+                }
+            }
+        });
         return accountsRegister;
     }
 
@@ -105,7 +120,7 @@ export class AccountRegistersRepository {
                     equals: data.dueDate,
                 },
                 status: {
-                    equals: data.status
+                    in: data.status
                 },
                 accountId: {
                     equals: data.accountId
@@ -126,4 +141,39 @@ export class AccountRegistersRepository {
         return accountsRegisters;
     }
 
+
+    async updateStatus(groupId: string){
+        const filter: FilterAccountDTO = { groupId: groupId };
+        const accounts = await this.accountRepository.filter(filter);
+
+
+        accounts.forEach(async account => {
+            const filterRegisterNotPayed: FilterAccountsRegistersDTO = {
+                accountId: account.id,
+                status: [StatusAccount.LATED,StatusAccount.PENDING]
+        }
+            const filterRegisterPayed: FilterAccountsRegistersDTO = {
+                accountId: account.id,
+                status: [StatusAccount.PAYED]
+            }
+            const accountsRegisterNotPayed = await this.filter(filterRegisterNotPayed);
+            const accountsRegisterPayed = await this.filter(filterRegisterPayed);
+            accountsRegisterNotPayed.forEach(async register => {
+                if (new Date() > register.dueDate) {
+                    const editRegister: EditAccountsRegistersDTO = {
+                        status: StatusAccount.LATED,
+                    }
+                    await this.edit(register.id, editRegister);
+                }
+            })
+            if (accountsRegisterPayed.length == account.installments ){
+                const editAccount: EditAccountDTO = {
+                    status: StatusAccount.PAYED,
+                }
+                await this.accountRepository.edit(account.id, editAccount);
+            }
+
+        })
+
+    }
 }

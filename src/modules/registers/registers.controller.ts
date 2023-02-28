@@ -1,11 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { CreateRegisterDTO } from "./dto/createRegister.dto";
 import { EditRegisterDTO } from "./dto/editRegister.dto";
 import { RegistersRepository } from "./registers.repository";
 import { FilterRegisterDTO } from "./dto/filterRegister.dto";
+import { JwtAuthGuard } from "../authenticate/strategies/token.guard";
 
 
-
+@UseGuards(JwtAuthGuard)
 @Controller('/registers')
 export class RegisterController {
     constructor(private registersRepository: RegistersRepository){}

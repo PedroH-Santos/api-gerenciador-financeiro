@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AccountRepository } from "./accounts.repository";
 import { CreateAccountDTO } from "./dto/createAccount.dto";
 import { EditAccountDTO } from "./dto/editAccount.dto";
 import { FilterAccountDTO } from "./dto/filterAccount.dto";
+import { JwtAuthGuard } from "../authenticate/strategies/token.guard";
 
+@UseGuards(JwtAuthGuard)
 @Controller('/accounts')
 export class AccountsController {
     constructor(private accountRepository: AccountRepository){ }

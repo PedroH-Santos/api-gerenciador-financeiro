@@ -10,7 +10,7 @@ export class FilterAccountsRegistersDTO {
 
     @IsOptional()
     @IsEnum(StatusAccount)
-    status?: StatusAccount;
+    status?: StatusAccount[];
 
     @IsOptional()
     accountId?: string;
