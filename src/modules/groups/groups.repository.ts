@@ -28,7 +28,15 @@ export class GroupRepository {
 
 
     async listAll(): Promise<Groups[]> {
-        const groups = await this.prismaService.groups.findMany();
+        const groups = await this.prismaService.groups.findMany({
+            include: {
+                creator: {
+                    select: {
+                        name: true,
+                    }
+                }
+            }
+        });
         return groups;
     }
 
