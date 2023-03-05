@@ -30,13 +30,7 @@ export class GroupController {
         }
     }
 
-    @Get("/:id")
-    async listOne(@Param('id') id: string) {
-        const group = await this.groupsRepository.findOne(id);
-        return {
-            group,
-        }
-    }
+
 
     @Put(":id")
     async edit(@Param('id') id: string, @Body() data: EditGroupDTO) {
@@ -59,6 +53,13 @@ export class GroupController {
         const groups = await this.groupsRepository.filter(data);
         return {
             groups,
+        }
+    }
+    @Get("/one/:id")
+    async listOne(@Param('id') id: string) {
+        const group = await this.groupsRepository.findOne(id);
+        return {
+            group,
         }
     }
 }

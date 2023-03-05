@@ -49,6 +49,7 @@ export class AuthenticateService {
         return {
             access_token: tokens.token,
             refresh_token: tokens.refreshToken,
+            user: user,
         };
     }
 

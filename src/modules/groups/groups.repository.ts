@@ -84,9 +84,17 @@ export class GroupRepository {
                     contains: data.name
                 },
                 code: {
-                    contains: data.code
+                    equals: data.code
                 }
             },
+            include: {
+                creator: {
+                    select: {
+                        name: true,
+                    }
+                }
+            }
+
         })
         return groups;
     }
