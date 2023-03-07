@@ -38,6 +38,15 @@ export class UsersController {
         }
     } 
     @UseGuards(JwtAuthGuard)
+    @Get("/one/:id")
+    async getOne(@Param("id") id: string) {
+        const user = await this.usersRepository.findOne(id);
+        return {
+            user,
+        }
+    } 
+
+    @UseGuards(JwtAuthGuard)
     @Put(":id") 
     async edit(@Param('id') id: string, @Body() data: EditUserDTO){
         const user = await this.usersRepository.edit(id,data);

@@ -56,7 +56,7 @@ export class GroupController {
         }
     }
     @Get("/one/:id")
-    async listOne(@Param('id') id: string) {
+    async getOne(@Param('id') id: string) {
         const group = await this.groupsRepository.findOne(id);
         return {
             group,
