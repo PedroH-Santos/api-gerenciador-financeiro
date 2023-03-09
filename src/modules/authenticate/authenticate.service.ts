@@ -100,5 +100,11 @@ export class AuthenticateService {
 
 
     }
+    
+
+    async getUserOfToken(userToken: UserTokenDTO){
+        const user = await this.usersRepository.findOne(userToken.userId);
+        return user;
+    } 
 
 }

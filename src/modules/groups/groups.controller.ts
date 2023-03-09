@@ -8,7 +8,7 @@ import { JwtAuthGuard } from "../authenticate/strategies/token.guard";
 
 
 
-//@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('/groups')
 export class GroupController {
     constructor(private groupsRepository: GroupRepository){}
