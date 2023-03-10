@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { PrismaService } from '../../database/service/prisma.service';
 import { Groups } from '@prisma/client';
 import { CreateGroupDTO } from './dto/createGroup.dto';
@@ -6,11 +6,15 @@ import { generate } from 'shortid';
 import { EditGroupDTO } from './dto/editGroup.dto';
 import { FilterGroupsDTO } from './dto/filterGroups.dto';
 import { UserTokenDTO } from '../authenticate/dto/userToken.dto';
+import { GroupsMembersRepository } from '../groupsMembers/groupsMembers.repository';
+import { JoinGroupDTO } from '../groupsMembers/dto/joinGroup.dto';
 
 
 @Injectable()
 export class GroupRepository {
-    constructor(private prismaService: PrismaService) { }
+    constructor(private prismaService: PrismaService, 
+        @Inject(forwardRef(() => GroupsMembersRepository))
+        private groupsMembersRepository: GroupsMembersRepository) { }
 
     async create(data: CreateGroupDTO, user: UserTokenDTO): Promise<Groups> {
         const code  = generate();
@@ -20,21 +24,40 @@ export class GroupRepository {
                 code: code,
                 creatorId: user.userId
       
-            }
-        })
-
-        return groupCreated;
-    }
-
-
-    async listAll(): Promise<Groups[]> {
-        const groups = await this.prismaService.groups.findMany({
+            },
             include: {
                 creator: {
                     select: {
                         name: true,
                     }
                 }
+            }
+        })
+        const params: JoinGroupDTO =  {
+            code: groupCreated.code
+        }
+        await this.groupsMembersRepository.create(params,user);
+
+        return groupCreated;
+    }
+
+
+    async listAll(user: UserTokenDTO): Promise<Groups[]> {
+        const groups = await this.prismaService.groups.findMany({
+            where: {
+                GroupsMembers: {
+                    some: {
+                        userId: user.userId
+                    }
+                }
+            },
+            include: {
+                creator: {
+                    select: {
+                        name: true,
+                    }
+                }
+                
             }
         });
         return groups;
@@ -43,8 +66,31 @@ export class GroupRepository {
     async findOne(id: string): Promise<Groups> {
         const group = await this.prismaService.groups.findFirst({
             where: { id: id },
+            include: {
+                creator: {
+                    select: {
+                        name: true,
+                    }
+                }
+
+            }
         });
         return group;
+    }
+
+    async findByCode(code: string): Promise<Groups>{
+        const group = await this.prismaService.groups.findFirst({
+            where: { code: code },
+            include: {
+                creator: {
+                    select: {
+                        name: true,
+                    }
+                }
+
+            }
+        });
+        return group; 
     }
 
     async edit(id: string, data: EditGroupDTO): Promise<Groups> {

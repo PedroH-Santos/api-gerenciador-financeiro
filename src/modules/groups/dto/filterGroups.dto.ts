@@ -6,10 +6,10 @@ import { IsEmail, IsEmpty, IsEnum, IsNotEmpty, IsNumber, IsOptional } from "clas
 export class FilterGroupsDTO {
 
     @IsOptional()
-    name: string;
+    name?: string;
 
     @IsOptional()
-    code: string;
+    code?: string;
 
 
 }

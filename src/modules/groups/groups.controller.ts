@@ -23,8 +23,8 @@ export class GroupController {
     }
 
     @Get()
-    async list() {
-        const groups = await this.groupsRepository.listAll();
+    async list(@Request() req: any) {
+        const groups = await this.groupsRepository.listAll(req.user);
         return {
             groups,
         }
