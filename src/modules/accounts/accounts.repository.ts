@@ -6,6 +6,7 @@ import { EditAccountDTO } from './dto/editAccount.dto';
 import { FilterAccountDTO } from './dto/filterAccount.dto';
 import { AccountRegistersRepository } from '../accountsRegisters/accountsRegisters.repository';
 import { CreateAccountsRegistersDTO } from '../accountsRegisters/dto/CreateAccountsRegisters.dto';
+import { UserTokenDTO } from '../authenticate/dto/userToken.dto';
 
 
 
@@ -34,8 +35,18 @@ export class AccountRepository {
     }
  
 
-    async listAll(): Promise<Accounts[]> {
-        const accounts = await this.prismaService.accounts.findMany();
+    async listAll(user: UserTokenDTO): Promise<Accounts[]> {
+        const accounts = await this.prismaService.accounts.findMany({
+            where: {
+                group: {
+                    GroupsMembers: {
+                        some: {
+                            userId: user.userId
+                        }
+                    }
+                }
+            }
+        });
         return accounts;
     }
 

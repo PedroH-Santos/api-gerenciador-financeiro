@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards, UseInterceptors, Request } from "@nestjs/common";
 import { AccountRepository } from "./accounts.repository";
 import { CreateAccountDTO } from "./dto/createAccount.dto";
 import { EditAccountDTO } from "./dto/editAccount.dto";
@@ -20,8 +20,8 @@ export class AccountsController {
     }
 
     @Get()
-    async list(){
-        const accounts = await this.accountRepository.listAll();
+    async list(@Request() req: any){
+        const accounts = await this.accountRepository.listAll(req.user);
         return {
             accounts,
         }
