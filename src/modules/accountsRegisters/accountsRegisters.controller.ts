@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Query, UseGuards, UseInterceptors, Request } from "@nestjs/common";
 import { AccountRegistersRepository } from "./accountsRegisters.repository";
 import { JwtAuthGuard } from "../authenticate/strategies/token.guard";
 import { EditAccountsRegistersDTO } from "./dto/editAccountsRegisters.dto";
@@ -8,17 +8,17 @@ import { EditAccountsRegistersDTO } from "./dto/editAccountsRegisters.dto";
 export class AccountsRegistersController {
     constructor(private accountRegistersRepository: AccountRegistersRepository) { }
 
-    @Post("/create/:groupId")
-    async create(@Param('groupId') groupId: string) {
-       await this.accountRegistersRepository.createRegister(groupId);
+    @Post("/create")
+    async create(@Request() req: any) {
+        await this.accountRegistersRepository.createRegister(req.user);
         return {
             message: "Registros de contas criadas com sucesso no mês  ",
         }
     }
 
-    @Put("/status/:groupId")
-    async updateStatus(@Param('groupId') groupId: string){
-        await this.accountRegistersRepository.updateStatus(groupId);
+    @Put("/status")
+    async updateStatus(@Request() req: any){
+        await this.accountRegistersRepository.updateStatus(req);
         return {
             message: "Status das contas alteradas com sucesso no mês  ",
         }
