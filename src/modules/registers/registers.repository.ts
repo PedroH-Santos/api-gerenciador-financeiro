@@ -26,8 +26,12 @@ export class RegistersRepository {
     }
 
 
-    async listAll(): Promise<Registers[]> {
-        const registers = await this.prismaService.registers.findMany();
+    async listAll(groupId:  string): Promise<Registers[]> {
+        const registers = await this.prismaService.registers.findMany({
+            where: {
+                groupId: groupId
+            }
+        });
         return registers;
     }
 
@@ -63,9 +67,10 @@ export class RegistersRepository {
             }, HttpStatus.BAD_REQUEST);
         }
 
-        await this.prismaService.registers.delete({
+        const registerDelete = await this.prismaService.registers.delete({
             where: { id: id },
         })
+        return registerDelete;
     }
 
 
@@ -77,9 +82,6 @@ export class RegistersRepository {
                 },
                 createdAt: {
                     equals: data.createdAt
-                },
-                groupId: {
-                    equals: data.groupId
                 }
              },
         })

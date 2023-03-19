@@ -6,15 +6,14 @@ import { IsDateString, IsEmail, IsEnum, IsNotEmpty, IsNumber, IsOptional } from 
 export class FilterRegisterDTO {
 
     @IsOptional()
-    name: string;
+    name?: string;
 
     @IsOptional()
-    @IsDateString()
-    createdAt: string;
+    createdAt?: string;
 
 
     @IsOptional()
-    groupId: string;
+    groupId?: string;
 
 
 }

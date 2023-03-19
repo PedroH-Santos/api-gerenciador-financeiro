@@ -19,13 +19,7 @@ export class RegisterController {
             register,
         }
     }
-    @Get()
-    async list(){
-        const registers = await this.registersRepository.listAll();
-        return {
-            registers,
-        }
-    }
+
 
     @Put(":id")
     async edit(@Param('id') id: string, @Body() data: EditRegisterDTO) {
@@ -38,15 +32,16 @@ export class RegisterController {
 
     @Delete(':id')
     async delete(@Param('id') id: string) {
-        await this.registersRepository.delete(id);
+        const register = await this.registersRepository.delete(id);
         return {
+            register,
             message: "Registro deletado com sucesso"
         }
     }
 
-    @Get("/filter")
-    async filter(@Query() data: FilterRegisterDTO) {
-        const registers = await this.registersRepository.filter(data);
+    @Get(":groupId")
+    async list(@Param('groupId') groupId: string) {
+        const registers = await this.registersRepository.listAll(groupId);
         return {
             registers,
         }
