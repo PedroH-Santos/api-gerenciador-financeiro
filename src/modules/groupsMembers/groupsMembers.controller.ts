@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards,Request } from "@nestjs/common";
+import { Body, Controller, Post, UseGuards,Request, Get, Param } from "@nestjs/common";
 import { JwtAuthGuard } from "src/modules/authenticate/strategies/token.guard";
 import { JoinGroupDTO } from "./dto/joinGroup.dto";
 import { GroupsMembersRepository } from "./groupsMembers.repository";
@@ -26,6 +26,15 @@ export class GroupsMembersController {
         return {
             message: "Usuário saiu do grupo com sucesso",
             group,
+        }
+    }
+
+    @Get("/:groupId")
+    async listAllMembers(@Param("groupId") groupId: string) {
+        const members = await this.groupsMembersRepository.listAllByGroup(groupId);
+        return {
+            members,
+            message: "Todos os membros foram retornados"
         }
     }
 }

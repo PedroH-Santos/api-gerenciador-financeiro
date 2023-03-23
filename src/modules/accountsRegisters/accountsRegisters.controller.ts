@@ -33,4 +33,14 @@ export class AccountsRegistersController {
         }
     }
 
+
+    @Get(":groupId")
+    async listAllByGroupId(@Param("groupId") groupId: string) {
+        const registers = await this.accountRegistersRepository.listByGroup(groupId);
+        return {
+            registers,
+            message: "Todos os registros foram retornados com sucesso"
+        }
+    }
+
 }

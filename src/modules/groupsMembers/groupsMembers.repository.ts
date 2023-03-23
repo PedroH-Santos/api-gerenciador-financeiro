@@ -67,5 +67,15 @@ export class GroupsMembersRepository {
 
         return groupExist;
     }
-
+    async listAllByGroup(groupId: string): Promise<GroupsMembers[]> {
+        const members = await this.prismaService.groupsMembers.findMany({
+            include: {
+                user: true,
+            },
+            where: {
+                groupId: groupId
+            },
+        });
+        return members;
+    }
 }
