@@ -50,6 +50,14 @@ export class AccountRepository {
         return accounts;
     }
 
+    async listByGroup(groupId: string): Promise<Accounts[]> {
+        const accounts = await this.prismaService.accounts.findMany({
+            where: {
+                groupId: groupId
+            }
+        });
+        return accounts;
+    }
     async findOne(id: string): Promise<Accounts> {
         const account = await this.prismaService.accounts.findFirst({
             where: { id: id },

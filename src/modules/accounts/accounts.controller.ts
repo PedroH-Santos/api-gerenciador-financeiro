@@ -19,13 +19,6 @@ export class AccountsController {
         }
     }
 
-    @Get()
-    async list(@Request() req: any){
-        const accounts = await this.accountRepository.listAll(req.user);
-        return {
-            accounts,
-        }
-    } 
 
     @Put(":id") 
     async edit(@Param('id') id: string, @Body() data: EditAccountDTO){
@@ -50,4 +43,17 @@ export class AccountsController {
             accounts,
         }
     }
+
+
+
+    @Get(":groupId")
+    async listAllByGroupId(@Param("groupId") groupId: string) {
+        const accounts = await this.accountRepository.listByGroup(groupId);
+        return {
+            accounts,
+            message: "Todas as contas foram retornadas com sucesso"
+        }
+    }
+
+
 }

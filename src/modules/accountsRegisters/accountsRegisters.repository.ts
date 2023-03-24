@@ -18,27 +18,26 @@ export class AccountRegistersRepository {
     constructor(private prismaService: PrismaService, private accountRepository: AccountRepository, private groupsRepository: GroupRepository) { }
 
 
-    async createRegister(user: UserTokenDTO) {
-        const groups = await this.groupsRepository.listAll(user);
-        groups.forEach(async (group) => {
-            const filter: FilterAccountDTO = { groupId: group.id };
-            const accounts = await this.accountRepository.filter(filter);
-            const accountsRegisters = await this.getRegistersByMonth(group.id);
+    async createRegister(groupId: string) {
 
-            accounts.forEach(account => {
-                const findRegisterInMonth = accountsRegisters.find(register => register.accountId == account.id);
-                if (!findRegisterInMonth) {
-                    const dueDateNow = new Date((new Date().getMonth() + 1) + '/' + account.dayDueDate + "/" + new Date().getFullYear()).toISOString();
-                    const newRegister: CreateAccountsRegistersDTO = {
-                        accountId: account.id,
-                        dueDate: dueDateNow,
-                        price: account.priceInstallments,
-                        installments: account.installments
-                    };
-                    this.create(newRegister);
-                }
-            });
+        const filter: FilterAccountDTO = { groupId: groupId };
+        const accounts = await this.accountRepository.filter(filter);
+        const accountsRegisters = await this.getRegistersByMonth(groupId);
+
+        accounts.forEach(account => {
+            const findRegisterInMonth = accountsRegisters.find(register => register.accountId == account.id);
+            if (!findRegisterInMonth) {
+                const dueDateNow = new Date((new Date().getMonth() + 1) + '/' + account.dayDueDate + "/" + new Date().getFullYear()).toISOString();
+                const newRegister: CreateAccountsRegistersDTO = {
+                    accountId: account.id,
+                    dueDate: dueDateNow,
+                    price: account.priceInstallments,
+                    installments: account.installments
+                };
+                this.create(newRegister);
+            }
         });
+
 
 
 
@@ -150,40 +149,38 @@ export class AccountRegistersRepository {
 
 
 
-    async updateStatus(user: UserTokenDTO) {
-        const groups = await this.groupsRepository.listAll(user);
-        groups.forEach(async (group) => {
-            const filter: FilterAccountDTO = { groupId: group.id };
-            const accounts = await this.accountRepository.filter(filter);
-            accounts.forEach(async account => {
-                const filterRegisterNotPayed: FilterAccountsRegistersDTO = {
-                    accountId: account.id,
-                    status: [StatusAccount.LATED, StatusAccount.PENDING]
-                }
-                const filterRegisterPayed: FilterAccountsRegistersDTO = {
-                    accountId: account.id,
-                    status: [StatusAccount.PAYED]
-                }
-                const accountsRegisterNotPayed = await this.filter(filterRegisterNotPayed);
-                const accountsRegisterPayed = await this.filter(filterRegisterPayed);
-                accountsRegisterNotPayed.forEach(async (register) => {
-                    if (new Date() > register.dueDate) {
-                        const editRegister: EditAccountsRegistersDTO = {
-                            status: StatusAccount.LATED,
-                        }
-                        await this.edit(register.id, editRegister);
+    async updateStatus(groupId: string) {
+        const filter: FilterAccountDTO = { groupId: groupId };
+        const accounts = await this.accountRepository.filter(filter);
+        accounts.forEach(async account => {
+            const filterRegisterNotPayed: FilterAccountsRegistersDTO = {
+                accountId: account.id,
+                status: [StatusAccount.LATED, StatusAccount.PENDING]
+            }
+            const filterRegisterPayed: FilterAccountsRegistersDTO = {
+                accountId: account.id,
+                status: [StatusAccount.PAYED]
+            }
+            const accountsRegisterNotPayed = await this.filter(filterRegisterNotPayed);
+            const accountsRegisterPayed = await this.filter(filterRegisterPayed);
+            accountsRegisterNotPayed.forEach(async (register) => {
+                if (new Date() > register.dueDate) {
+                    const editRegister: EditAccountsRegistersDTO = {
+                        status: StatusAccount.LATED,
                     }
-                })
-                if (accountsRegisterPayed.length == account.installments) {
-                    const editAccount: EditAccountDTO = {
-                        status: StatusAccount.PAYED,
-                    }
-                    await this.accountRepository.edit(account.id, editAccount);
+                    await this.edit(register.id, editRegister);
                 }
-
             })
+            if (accountsRegisterPayed.length == account.installments) {
+                const editAccount: EditAccountDTO = {
+                    status: StatusAccount.PAYED,
+                }
+                await this.accountRepository.edit(account.id, editAccount);
+            }
 
-        });
+        })
+
+
 
     }
 }

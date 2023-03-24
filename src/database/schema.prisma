@@ -46,7 +46,7 @@ model Users {
 model UsersTokens {
   id           String   @id @default(uuid())
   userId       String   @unique()
-  user         Users    @relation(fields: [userId], references: [id])
+  user         Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
   refreshToken String
   createdAt    DateTime @default(now())
 
@@ -58,7 +58,7 @@ model GroupsMembers {
   userId    String
   user      Users    @relation(fields: [userId], references: [id])
   groupId   String
-  group     Groups   @relation(fields: [groupId], references: [id])
+  group     Groups   @relation(fields: [groupId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   @@map("groupsMembers")
 }
@@ -83,7 +83,7 @@ model Registers {
   price     Float
   status    StatusRegister @default(DEPOSIT)
   groupId String 
-  group Groups @relation(fields: [groupId], references: [id])
+  group Groups @relation(fields: [groupId], references: [id], onDelete: Cascade)
   
   createdAt DateTime       @default(now())
 
@@ -98,7 +98,7 @@ model AccountsRegisters {
   dueDate      DateTime
   status       StatusAccount @default(PENDING)
   accountId String
-  accounts Accounts @relation(fields: [accountId], references: [id])
+  accounts Accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
   createdAt    DateTime      @default(now())
 
   @@map("accountsRegisters")
@@ -114,7 +114,7 @@ model Accounts {
   installments Int
   registers AccountsRegisters[]
   groupId String
-  group Groups @relation(fields: [groupId], references: [id])
+  group Groups @relation(fields: [groupId], references: [id], onDelete: Cascade)
   type         TypeAccount   @default(RECURRENT)
   status       StatusAccount @default(PENDING)
   createdAt    DateTime      @default(now())

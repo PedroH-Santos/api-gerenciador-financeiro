@@ -8,17 +8,17 @@ import { EditAccountsRegistersDTO } from "./dto/editAccountsRegisters.dto";
 export class AccountsRegistersController {
     constructor(private accountRegistersRepository: AccountRegistersRepository) { }
 
-    @Post("/create")
-    async create(@Request() req: any) {
-        await this.accountRegistersRepository.createRegister(req.user);
+    @Post("/create/:groupId")
+    async create(@Param("groupId") groupId: string) {
+        await this.accountRegistersRepository.createRegister(groupId);
         return {
             message: "Registros de contas criadas com sucesso no mês  ",
         }
     }
 
-    @Put("/status")
-    async updateStatus(@Request() req: any){
-        await this.accountRegistersRepository.updateStatus(req);
+    @Put("/status/:groupId")
+    async updateStatus(@Param("groupId") groupId: string) {
+        await this.accountRegistersRepository.updateStatus(groupId);
         return {
             message: "Status das contas alteradas com sucesso no mês  ",
         }
@@ -35,7 +35,7 @@ export class AccountsRegistersController {
 
 
     @Get(":groupId")
-    async listAllByGroupId(@Param("groupId") groupId: string) {
+    async listAllByGroupId(@Param(":groupId") groupId: string) {
         const registers = await this.accountRegistersRepository.listByGroup(groupId);
         return {
             registers,
