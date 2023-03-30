@@ -7,15 +7,15 @@ export class EditUserDTO {
 
 
     @IsOptional()
-    name: string;
+    name?: string;
 
     @IsOptional()
     @IsEmail()
-    email: string;
+    email?: string;
 
     @IsOptional()
-    password: string;
+    password?: string;
 
     @IsOptional()
-    image: string;
+    image?: string;
 }
