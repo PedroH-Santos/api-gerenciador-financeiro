@@ -6,17 +6,18 @@ import { generate } from 'shortid';
 import { EditGroupDTO } from './dto/editGroup.dto';
 import { FilterGroupsDTO } from './dto/filterGroups.dto';
 import { UserTokenDTO } from '../authenticate/dto/userToken.dto';
-import { GroupsMembersRepository } from '../groupsMembers/groupsMembers.repository';
 import { JoinGroupDTO } from '../groupsMembers/dto/joinGroup.dto';
+import { GroupsMembersService } from '../groupsMembers/groupsMembers.service';
 
 
 @Injectable()
 export class GroupRepository {
     constructor(private prismaService: PrismaService, 
-        @Inject(forwardRef(() => GroupsMembersRepository))
-        private groupsMembersRepository: GroupsMembersRepository) { }
+        @Inject(forwardRef(() => GroupsMembersService))
+        private groupsMembersService: GroupsMembersService) { }
 
     async create(data: CreateGroupDTO, user: UserTokenDTO): Promise<Groups> {
+       
         const code  = generate();
         const groupCreated = await this.prismaService.groups.create({
             data: {
@@ -36,7 +37,7 @@ export class GroupRepository {
         const params: JoinGroupDTO =  {
             code: groupCreated.code
         }
-        await this.groupsMembersRepository.create(params,user);
+        await this.groupsMembersService.join(params,user);
 
         return groupCreated;
     }

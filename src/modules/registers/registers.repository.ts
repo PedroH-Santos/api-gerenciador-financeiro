@@ -43,14 +43,6 @@ export class RegistersRepository {
     }
 
     async edit(id: string, data: EditRegisterDTO): Promise<Registers> {
-        const registerFind = await this.findOne(id);
-        if (!registerFind) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: 'Registro não encontrado'
-            }, HttpStatus.BAD_REQUEST);
-        }
-
         const register = await this.prismaService.registers.update({
             data: data,
             where: { id: id },
@@ -59,14 +51,6 @@ export class RegistersRepository {
     }
 
     async delete(id: string) {
-        const registerFind = await this.findOne(id);
-        if (!registerFind) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: 'Registro não encontrado'
-            }, HttpStatus.BAD_REQUEST);
-        }
-
         const registerDelete = await this.prismaService.registers.delete({
             where: { id: id },
         })
@@ -80,9 +64,6 @@ export class RegistersRepository {
                 name: {
                     contains: data.name
                 },
-                createdAt: {
-                    equals: data.createdAt
-                }
              },
         })
         return registers;

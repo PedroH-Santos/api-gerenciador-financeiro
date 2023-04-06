@@ -45,133 +45,77 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.UsersController = void 0;
+exports.GroupsMembersController = void 0;
 var common_1 = require("@nestjs/common");
-var platform_express_1 = require("@nestjs/platform-express");
-var decorators_1 = require("@nestjs/common/decorators");
-var multer_config_1 = require("src/config/multer.config");
-var token_guard_1 = require("../authenticate/strategies/token.guard");
-var UsersController = /** @class */ (function () {
-    function UsersController(usersService) {
-        this.usersService = usersService;
+var token_guard_1 = require("src/modules/authenticate/strategies/token.guard");
+var GroupsMembersController = /** @class */ (function () {
+    function GroupsMembersController(groupsMembersService) {
+        this.groupsMembersService = groupsMembersService;
     }
-    UsersController.prototype.create = function (data) {
+    GroupsMembersController.prototype.join = function (data, req) {
         return __awaiter(this, void 0, void 0, function () {
-            var user;
+            var group;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService.create(data)];
+                    case 0: return [4 /*yield*/, this.groupsMembersService.join(data, req.user)];
                     case 1:
-                        user = _a.sent();
+                        group = _a.sent();
                         return [2 /*return*/, {
-                                message: "Usuário criado com sucesso  ",
-                                user: user
+                                message: "Usuário entrou no grupo com sucesso",
+                                group: group
                             }];
                 }
             });
         });
     };
-    UsersController.prototype.uploadImage = function (file) {
+    GroupsMembersController.prototype.out = function (data, req) {
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, {
-                        message: "Imagem do usuário cadastrada com sucesso",
-                        file: file
-                    }];
-            });
-        });
-    };
-    UsersController.prototype.list = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var users;
+            var group;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService.list()];
+                    case 0: return [4 /*yield*/, this.groupsMembersService.out(data, req.user)];
                     case 1:
-                        users = _a.sent();
+                        group = _a.sent();
                         return [2 /*return*/, {
-                                users: users
+                                message: "Usuário saiu do grupo com sucesso",
+                                group: group
                             }];
                 }
             });
         });
     };
-    UsersController.prototype.getOne = function (id) {
+    GroupsMembersController.prototype.listAllMembers = function (groupId) {
         return __awaiter(this, void 0, void 0, function () {
-            var user;
+            var members;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService.getOne(id)];
+                    case 0: return [4 /*yield*/, this.groupsMembersService.listAllMembers(groupId)];
                     case 1:
-                        user = _a.sent();
+                        members = _a.sent();
                         return [2 /*return*/, {
-                                user: user
-                            }];
-                }
-            });
-        });
-    };
-    UsersController.prototype.edit = function (id, data) {
-        return __awaiter(this, void 0, void 0, function () {
-            var user;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService.edit(id, data)];
-                    case 1:
-                        user = _a.sent();
-                        return [2 /*return*/, {
-                                message: "Usuário alterado com sucesso",
-                                user: user
-                            }];
-                }
-            });
-        });
-    };
-    UsersController.prototype["delete"] = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService["delete"](id)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, {
-                                message: "Usuário deletado com sucesso"
+                                members: members,
+                                message: "Todos os membros foram retornados"
                             }];
                 }
             });
         });
     };
     __decorate([
-        common_1.Post(),
-        __param(0, common_1.Body())
-    ], UsersController.prototype, "create");
+        common_1.Post("/join"),
+        __param(0, common_1.Body()), __param(1, common_1.Request())
+    ], GroupsMembersController.prototype, "join");
     __decorate([
-        common_1.Post('/upload/image'),
-        common_1.UseInterceptors(platform_express_1.FileInterceptor('file', multer_config_1.multerUploadOptions)),
-        __param(0, decorators_1.UploadedFile())
-    ], UsersController.prototype, "uploadImage");
+        common_1.Post("/out"),
+        __param(0, common_1.Body()), __param(1, common_1.Request())
+    ], GroupsMembersController.prototype, "out");
     __decorate([
-        decorators_1.UseGuards(token_guard_1.JwtAuthGuard),
-        common_1.Get()
-    ], UsersController.prototype, "list");
-    __decorate([
-        decorators_1.UseGuards(token_guard_1.JwtAuthGuard),
-        common_1.Get("/one/:id"),
-        __param(0, common_1.Param("id"))
-    ], UsersController.prototype, "getOne");
-    __decorate([
-        decorators_1.UseGuards(token_guard_1.JwtAuthGuard),
-        common_1.Put(":id"),
-        __param(0, common_1.Param('id')), __param(1, common_1.Body())
-    ], UsersController.prototype, "edit");
-    __decorate([
-        decorators_1.UseGuards(token_guard_1.JwtAuthGuard),
-        common_1.Delete(':id'),
-        __param(0, common_1.Param('id'))
-    ], UsersController.prototype, "delete");
-    UsersController = __decorate([
-        common_1.Controller('/users')
-    ], UsersController);
-    return UsersController;
+        common_1.Get("/:groupId"),
+        __param(0, common_1.Param("groupId"))
+    ], GroupsMembersController.prototype, "listAllMembers");
+    GroupsMembersController = __decorate([
+        common_1.UseGuards(token_guard_1.JwtAuthGuard),
+        common_1.Controller('/groups/members')
+    ], GroupsMembersController);
+    return GroupsMembersController;
 }());
-exports.UsersController = UsersController;
+exports.GroupsMembersController = GroupsMembersController;

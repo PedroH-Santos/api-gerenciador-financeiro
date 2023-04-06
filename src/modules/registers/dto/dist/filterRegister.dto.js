@@ -6,24 +6,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 exports.__esModule = true;
-exports.EditUserDTO = void 0;
+exports.FilterRegisterDTO = void 0;
 var class_validator_1 = require("class-validator");
-var EditUserDTO = /** @class */ (function () {
-    function EditUserDTO() {
+var FilterRegisterDTO = /** @class */ (function () {
+    function FilterRegisterDTO() {
     }
     __decorate([
         class_validator_1.IsOptional()
-    ], EditUserDTO.prototype, "name");
-    __decorate([
-        class_validator_1.IsOptional(),
-        class_validator_1.IsEmail()
-    ], EditUserDTO.prototype, "email");
+    ], FilterRegisterDTO.prototype, "name");
     __decorate([
         class_validator_1.IsOptional()
-    ], EditUserDTO.prototype, "password");
-    __decorate([
-        class_validator_1.IsOptional()
-    ], EditUserDTO.prototype, "image");
-    return EditUserDTO;
+    ], FilterRegisterDTO.prototype, "groupId");
+    return FilterRegisterDTO;
 }());
-exports.EditUserDTO = EditUserDTO;
+exports.FilterRegisterDTO = FilterRegisterDTO;

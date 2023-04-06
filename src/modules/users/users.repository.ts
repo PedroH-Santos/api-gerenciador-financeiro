@@ -43,15 +43,7 @@ export class UsersRepository {
         return user;
     }
 
-    async edit(id: string, data: EditUserDTO ): Promise<Users> {
-        const userFind = await this.findOne(id);
-        if(!userFind) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error:  'Usuário não encontrado'
-            }, HttpStatus.BAD_REQUEST);
-        }
-        
+    async edit(id: string, data: EditUserDTO ): Promise<Users> {      
         const user = await this.prismaService.users.update({
             data: data,
             where: { id: id },
@@ -60,14 +52,6 @@ export class UsersRepository {
     }
 
     async delete(id: string) {
-        const userFind = await this.findOne(id);
-        if (!userFind) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: 'Usuário não encontrado'
-            }, HttpStatus.BAD_REQUEST);
-        }
-
         await this.prismaService.users.delete({
             where: { id: id },
         })

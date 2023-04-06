@@ -4,8 +4,6 @@ import { PrismaService } from '../../database/service/prisma.service';
 import { CreateAccountDTO } from './dto/createAccount.dto';
 import { EditAccountDTO } from './dto/editAccount.dto';
 import { FilterAccountDTO } from './dto/filterAccount.dto';
-import { AccountRegistersRepository } from '../accountsRegisters/accountsRegisters.repository';
-import { CreateAccountsRegistersDTO } from '../accountsRegisters/dto/CreateAccountsRegisters.dto';
 import { UserTokenDTO } from '../authenticate/dto/userToken.dto';
 
 
@@ -66,14 +64,6 @@ export class AccountRepository {
     }
 
     async edit(id: string, data: EditAccountDTO ): Promise<Accounts> {
-        const accountFind = await this.findOne(id);
-        if (!accountFind) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error:  'Usuário não encontrado'
-            }, HttpStatus.BAD_REQUEST);
-        }
-        
         const account = await this.prismaService.accounts.update({
             data: data,
             where: { id: id },
@@ -82,14 +72,6 @@ export class AccountRepository {
     }
 
     async delete(id: string) {
-        const accountFind = await this.findOne(id);
-        if (!accountFind) {
-            throw new HttpException({
-                status: HttpStatus.BAD_REQUEST,
-                error: 'Usuário não encontrado'
-            }, HttpStatus.BAD_REQUEST);
-        }
-
         await this.prismaService.accounts.delete({
             where: { id: id },
         })

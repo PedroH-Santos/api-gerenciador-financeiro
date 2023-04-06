@@ -2,15 +2,16 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, 
 import { AccountRegistersRepository } from "./accountsRegisters.repository";
 import { JwtAuthGuard } from "../authenticate/strategies/token.guard";
 import { EditAccountsRegistersDTO } from "./dto/editAccountsRegisters.dto";
+import { AccountsRegistersService } from "./accountsRegisters.service";
 
 @UseGuards(JwtAuthGuard)
 @Controller('/accounts/registers')
 export class AccountsRegistersController {
-    constructor(private accountRegistersRepository: AccountRegistersRepository) { }
+    constructor(private accountsRegistersService: AccountsRegistersService) { }
 
     @Post("/create/:groupId")
     async create(@Param("groupId") groupId: string) {
-        await this.accountRegistersRepository.createRegister(groupId);
+        await this.accountsRegistersService.create(groupId);
         return {
             message: "Registros de contas criadas com sucesso no mês  ",
         }
@@ -18,7 +19,7 @@ export class AccountsRegistersController {
 
     @Put("/status/:groupId")
     async updateStatus(@Param("groupId") groupId: string) {
-        await this.accountRegistersRepository.updateStatus(groupId);
+        await this.accountsRegistersService.updateStatus(groupId);
         return {
             message: "Status das contas alteradas com sucesso no mês  ",
         }
@@ -26,7 +27,7 @@ export class AccountsRegistersController {
 
     @Put(":registerId")
     async edit(@Param('registerId') registerId: string,@Body() data: EditAccountsRegistersDTO) {
-        const register = await this.accountRegistersRepository.edit(registerId, data);
+        const register = await this.accountsRegistersService.edit(registerId, data);
         return {
             register,
             message: "Registro da conta alterado com sucesso  ",
@@ -36,7 +37,7 @@ export class AccountsRegistersController {
 
     @Get(":groupId")
     async listAllByGroupId(@Param(":groupId") groupId: string) {
-        const registers = await this.accountRegistersRepository.listByGroup(groupId);
+        const registers = await this.accountsRegistersService.listAllByGroupId(groupId);
         return {
             registers,
             message: "Todos os registros foram retornados com sucesso"

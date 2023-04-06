@@ -45,133 +45,93 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.UsersController = void 0;
+exports.AccountsRegistersController = void 0;
 var common_1 = require("@nestjs/common");
-var platform_express_1 = require("@nestjs/platform-express");
-var decorators_1 = require("@nestjs/common/decorators");
-var multer_config_1 = require("src/config/multer.config");
 var token_guard_1 = require("../authenticate/strategies/token.guard");
-var UsersController = /** @class */ (function () {
-    function UsersController(usersService) {
-        this.usersService = usersService;
+var AccountsRegistersController = /** @class */ (function () {
+    function AccountsRegistersController(accountsRegistersService) {
+        this.accountsRegistersService = accountsRegistersService;
     }
-    UsersController.prototype.create = function (data) {
-        return __awaiter(this, void 0, void 0, function () {
-            var user;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService.create(data)];
-                    case 1:
-                        user = _a.sent();
-                        return [2 /*return*/, {
-                                message: "Usuário criado com sucesso  ",
-                                user: user
-                            }];
-                }
-            });
-        });
-    };
-    UsersController.prototype.uploadImage = function (file) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, {
-                        message: "Imagem do usuário cadastrada com sucesso",
-                        file: file
-                    }];
-            });
-        });
-    };
-    UsersController.prototype.list = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var users;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService.list()];
-                    case 1:
-                        users = _a.sent();
-                        return [2 /*return*/, {
-                                users: users
-                            }];
-                }
-            });
-        });
-    };
-    UsersController.prototype.getOne = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var user;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService.getOne(id)];
-                    case 1:
-                        user = _a.sent();
-                        return [2 /*return*/, {
-                                user: user
-                            }];
-                }
-            });
-        });
-    };
-    UsersController.prototype.edit = function (id, data) {
-        return __awaiter(this, void 0, void 0, function () {
-            var user;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService.edit(id, data)];
-                    case 1:
-                        user = _a.sent();
-                        return [2 /*return*/, {
-                                message: "Usuário alterado com sucesso",
-                                user: user
-                            }];
-                }
-            });
-        });
-    };
-    UsersController.prototype["delete"] = function (id) {
+    AccountsRegistersController.prototype.create = function (groupId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersService["delete"](id)];
+                    case 0: return [4 /*yield*/, this.accountsRegistersService.create(groupId)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/, {
-                                message: "Usuário deletado com sucesso"
+                                message: "Registros de contas criadas com sucesso no mês  "
+                            }];
+                }
+            });
+        });
+    };
+    AccountsRegistersController.prototype.updateStatus = function (groupId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.accountsRegistersService.updateStatus(groupId)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, {
+                                message: "Status das contas alteradas com sucesso no mês  "
+                            }];
+                }
+            });
+        });
+    };
+    AccountsRegistersController.prototype.edit = function (registerId, data) {
+        return __awaiter(this, void 0, void 0, function () {
+            var register;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.accountsRegistersService.edit(registerId, data)];
+                    case 1:
+                        register = _a.sent();
+                        return [2 /*return*/, {
+                                register: register,
+                                message: "Registro da conta alterado com sucesso  "
+                            }];
+                }
+            });
+        });
+    };
+    AccountsRegistersController.prototype.listAllByGroupId = function (groupId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var registers;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.accountsRegistersService.listAllByGroupId(groupId)];
+                    case 1:
+                        registers = _a.sent();
+                        return [2 /*return*/, {
+                                registers: registers,
+                                message: "Todos os registros foram retornados com sucesso"
                             }];
                 }
             });
         });
     };
     __decorate([
-        common_1.Post(),
-        __param(0, common_1.Body())
-    ], UsersController.prototype, "create");
+        common_1.Post("/create/:groupId"),
+        __param(0, common_1.Param("groupId"))
+    ], AccountsRegistersController.prototype, "create");
     __decorate([
-        common_1.Post('/upload/image'),
-        common_1.UseInterceptors(platform_express_1.FileInterceptor('file', multer_config_1.multerUploadOptions)),
-        __param(0, decorators_1.UploadedFile())
-    ], UsersController.prototype, "uploadImage");
+        common_1.Put("/status/:groupId"),
+        __param(0, common_1.Param("groupId"))
+    ], AccountsRegistersController.prototype, "updateStatus");
     __decorate([
-        decorators_1.UseGuards(token_guard_1.JwtAuthGuard),
-        common_1.Get()
-    ], UsersController.prototype, "list");
+        common_1.Put(":registerId"),
+        __param(0, common_1.Param('registerId')), __param(1, common_1.Body())
+    ], AccountsRegistersController.prototype, "edit");
     __decorate([
-        decorators_1.UseGuards(token_guard_1.JwtAuthGuard),
-        common_1.Get("/one/:id"),
-        __param(0, common_1.Param("id"))
-    ], UsersController.prototype, "getOne");
-    __decorate([
-        decorators_1.UseGuards(token_guard_1.JwtAuthGuard),
-        common_1.Put(":id"),
-        __param(0, common_1.Param('id')), __param(1, common_1.Body())
-    ], UsersController.prototype, "edit");
-    __decorate([
-        decorators_1.UseGuards(token_guard_1.JwtAuthGuard),
-        common_1.Delete(':id'),
-        __param(0, common_1.Param('id'))
-    ], UsersController.prototype, "delete");
-    UsersController = __decorate([
-        common_1.Controller('/users')
-    ], UsersController);
-    return UsersController;
+        common_1.Get(":groupId"),
+        __param(0, common_1.Param(":groupId"))
+    ], AccountsRegistersController.prototype, "listAllByGroupId");
+    AccountsRegistersController = __decorate([
+        common_1.UseGuards(token_guard_1.JwtAuthGuard),
+        common_1.Controller('/accounts/registers')
+    ], AccountsRegistersController);
+    return AccountsRegistersController;
 }());
-exports.UsersController = UsersController;
+exports.AccountsRegistersController = AccountsRegistersController;

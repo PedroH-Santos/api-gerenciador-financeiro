@@ -8,8 +8,7 @@ export class FilterRegisterDTO {
     @IsOptional()
     name?: string;
 
-    @IsOptional()
-    createdAt?: string;
+
 
 
     @IsOptional()
