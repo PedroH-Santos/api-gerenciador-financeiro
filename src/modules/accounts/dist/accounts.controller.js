@@ -5,6 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,98 +45,116 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.AccountsService = void 0;
+exports.AccountsController = void 0;
 var common_1 = require("@nestjs/common");
-var AccountsService = /** @class */ (function () {
-    function AccountsService(accountRepository) {
-        this.accountRepository = accountRepository;
+var token_guard_1 = require("../authenticate/strategies/token.guard");
+var AccountsController = /** @class */ (function () {
+    function AccountsController(accountsService) {
+        this.accountsService = accountsService;
     }
-    AccountsService.prototype.create = function (data) {
-        return __awaiter(this, void 0, Promise, function () {
+    AccountsController.prototype.create = function (data) {
+        return __awaiter(this, void 0, void 0, function () {
             var account;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.accountRepository.create(data)];
+                    case 0: return [4 /*yield*/, this.accountsService.create(data)];
                     case 1:
                         account = _a.sent();
-                        return [2 /*return*/, account];
+                        return [2 /*return*/, {
+                                message: "Conta criada com sucesso  ",
+                                account: account
+                            }];
                 }
             });
         });
     };
-    AccountsService.prototype.edit = function (id, data) {
-        return __awaiter(this, void 0, Promise, function () {
-            var accountFind, account;
+    AccountsController.prototype.edit = function (id, data) {
+        return __awaiter(this, void 0, void 0, function () {
+            var account;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.accountRepository.findOne(id)];
+                    case 0: return [4 /*yield*/, this.accountsService.edit(id, data)];
                     case 1:
-                        accountFind = _a.sent();
-                        if (!accountFind) {
-                            throw new common_1.HttpException({
-                                status: common_1.HttpStatus.BAD_REQUEST,
-                                error: 'Usuário não encontrado'
-                            }, common_1.HttpStatus.BAD_REQUEST);
-                        }
-                        return [4 /*yield*/, this.accountRepository.edit(id, data)];
-                    case 2:
                         account = _a.sent();
-                        return [2 /*return*/, account];
+                        return [2 /*return*/, {
+                                message: "Conta alterada com sucesso",
+                                account: account
+                            }];
                 }
             });
         });
     };
-    AccountsService.prototype["delete"] = function (id) {
-        return __awaiter(this, void 0, Promise, function () {
-            var accountFind, accountDeleted;
+    AccountsController.prototype["delete"] = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var account;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.accountRepository.findOne(id)];
+                    case 0: return [4 /*yield*/, this.accountsService["delete"](id)];
                     case 1:
-                        accountFind = _a.sent();
-                        if (!accountFind) {
-                            throw new common_1.HttpException({
-                                status: common_1.HttpStatus.BAD_REQUEST,
-                                error: 'Usuário não encontrado'
-                            }, common_1.HttpStatus.BAD_REQUEST);
-                        }
-                        return [4 /*yield*/, this.accountRepository["delete"](id)];
-                    case 2:
-                        accountDeleted = _a.sent();
-                        return [2 /*return*/, accountDeleted];
+                        account = _a.sent();
+                        return [2 /*return*/, {
+                                message: "Conta deletada com sucesso",
+                                account: account
+                            }];
                 }
             });
         });
     };
-    AccountsService.prototype.filter = function (data) {
-        return __awaiter(this, void 0, Promise, function () {
+    AccountsController.prototype.filter = function (data) {
+        return __awaiter(this, void 0, void 0, function () {
             var accounts;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.accountRepository.filter(data)];
+                    case 0: return [4 /*yield*/, this.accountsService.filter(data)];
                     case 1:
                         accounts = _a.sent();
-                        return [2 /*return*/, accounts];
+                        return [2 /*return*/, {
+                                accounts: accounts
+                            }];
                 }
             });
         });
     };
-    AccountsService.prototype.listAllByGroupId = function (groupId) {
-        return __awaiter(this, void 0, Promise, function () {
+    AccountsController.prototype.listAllByGroupId = function (groupId) {
+        return __awaiter(this, void 0, void 0, function () {
             var accounts;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.accountRepository.listByGroup(groupId)];
+                    case 0: return [4 /*yield*/, this.accountsService.listAllByGroupId(groupId)];
                     case 1:
                         accounts = _a.sent();
-                        return [2 /*return*/, accounts];
+                        return [2 /*return*/, {
+                                accounts: accounts,
+                                message: "Todas as contas foram retornadas com sucesso"
+                            }];
                 }
             });
         });
     };
-    AccountsService = __decorate([
-        common_1.Injectable()
-    ], AccountsService);
-    return AccountsService;
+    __decorate([
+        common_1.Post(),
+        __param(0, common_1.Body())
+    ], AccountsController.prototype, "create");
+    __decorate([
+        common_1.Put(":id"),
+        __param(0, common_1.Param('id')), __param(1, common_1.Body())
+    ], AccountsController.prototype, "edit");
+    __decorate([
+        common_1.Delete(':id'),
+        __param(0, common_1.Param('id'))
+    ], AccountsController.prototype, "delete");
+    __decorate([
+        common_1.Get("/filter"),
+        __param(0, common_1.Query())
+    ], AccountsController.prototype, "filter");
+    __decorate([
+        common_1.Get(":groupId"),
+        __param(0, common_1.Param("groupId"))
+    ], AccountsController.prototype, "listAllByGroupId");
+    AccountsController = __decorate([
+        common_1.UseGuards(token_guard_1.JwtAuthGuard),
+        common_1.Controller('/accounts')
+    ], AccountsController);
+    return AccountsController;
 }());
-exports.AccountsService = AccountsService;
+exports.AccountsController = AccountsController;

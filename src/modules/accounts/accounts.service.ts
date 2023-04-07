@@ -28,7 +28,7 @@ export class AccountsService {
         return account;
     }
 
-    async delete( id: string) {
+    async delete( id: string): Promise<Accounts> {
         const accountFind = await this.accountRepository.findOne(id);
         if (!accountFind) {
             throw new HttpException({
@@ -36,8 +36,8 @@ export class AccountsService {
                 error: 'Usuário não encontrado'
             }, HttpStatus.BAD_REQUEST);
         }
-        await this.accountRepository.delete(id);
-        
+        const accountDeleted = await this.accountRepository.delete(id);
+        return accountDeleted;
     }
     async filter(data: FilterAccountDTO): Promise<Accounts[]> {
         const accounts = await this.accountRepository.filter(data);

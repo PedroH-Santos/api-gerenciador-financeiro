@@ -32,9 +32,10 @@ export class AccountsController {
 
     @Delete(':id')
     async delete(@Param('id') id: string) {
-        await this.accountsService.delete(id);
+        const account = await this.accountsService.delete(id);
         return {
-            message: "Conta deletada com sucesso"
+            message: "Conta deletada com sucesso",
+            account,
         }
     }
     @Get("/filter")

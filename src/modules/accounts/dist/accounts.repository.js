@@ -144,15 +144,16 @@ var AccountRepository = /** @class */ (function () {
         });
     };
     AccountRepository.prototype["delete"] = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
+        return __awaiter(this, void 0, Promise, function () {
+            var account;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.prismaService.accounts["delete"]({
                             where: { id: id }
                         })];
                     case 1:
-                        _a.sent();
-                        return [2 /*return*/];
+                        account = _a.sent();
+                        return [2 /*return*/, account];
                 }
             });
         });

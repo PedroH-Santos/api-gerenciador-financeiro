@@ -71,10 +71,11 @@ export class AccountRepository {
         return account;
     }
 
-    async delete(id: string) {
-        await this.prismaService.accounts.delete({
+    async delete(id: string): Promise<Accounts> {
+        const account = await this.prismaService.accounts.delete({
             where: { id: id },
         })
+        return account;
     }
 
 

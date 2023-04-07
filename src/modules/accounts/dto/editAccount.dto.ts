@@ -1,5 +1,5 @@
-import { IsDate, IsDateString, IsEnum, IsNumber, IsOptional } from "class-validator";
-import { TypeAccount, StatusAccount } from "@prisma/client";
+import { IsNumber, IsOptional } from "class-validator";
+
 
 
 export class EditAccountDTO {
@@ -10,25 +10,5 @@ export class EditAccountDTO {
     @IsOptional()
     @IsNumber()
     price?: number;
-
-    @IsOptional()
-    @IsDateString()
-    dueDate?: string;
-
-    @IsOptional()
-    @IsEnum(TypeAccount)
-    type?: TypeAccount;
-
-
-
-    @IsOptional()
-    installments?: number;
-
-    @IsOptional()
-    @IsEnum(StatusAccount)
-    status?: StatusAccount;
-
-    @IsOptional()
-    groupId?: string;
 
 }
