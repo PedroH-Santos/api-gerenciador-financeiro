@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.EditAccountDTO = void 0;
+var client_1 = require("@prisma/client");
 var class_validator_1 = require("class-validator");
 var EditAccountDTO = /** @class */ (function () {
     function EditAccountDTO() {
@@ -18,6 +19,10 @@ var EditAccountDTO = /** @class */ (function () {
         class_validator_1.IsOptional(),
         class_validator_1.IsNumber()
     ], EditAccountDTO.prototype, "price");
+    __decorate([
+        class_validator_1.IsOptional(),
+        class_validator_1.IsEnum(client_1.StatusAccount)
+    ], EditAccountDTO.prototype, "status");
     return EditAccountDTO;
 }());
 exports.EditAccountDTO = EditAccountDTO;

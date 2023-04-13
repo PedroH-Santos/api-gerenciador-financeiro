@@ -1,4 +1,5 @@
-import { IsNumber, IsOptional } from "class-validator";
+import { StatusAccount } from "@prisma/client";
+import { IsEnum, IsNumber, IsOptional } from "class-validator";
 
 
 
@@ -10,5 +11,8 @@ export class EditAccountDTO {
     @IsOptional()
     @IsNumber()
     price?: number;
-
+    
+    @IsOptional()
+    @IsEnum(StatusAccount)
+    status?: StatusAccount;
 }
