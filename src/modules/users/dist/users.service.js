@@ -50,11 +50,20 @@ var UsersService = /** @class */ (function () {
     }
     UsersService.prototype.create = function (data) {
         return __awaiter(this, void 0, Promise, function () {
-            var user;
+            var emailExist, user;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.usersRepository.create(data)];
+                    case 0: return [4 /*yield*/, this.usersRepository.findByEmail(data.email)];
                     case 1:
+                        emailExist = _a.sent();
+                        if (emailExist) {
+                            throw new common_1.HttpException({
+                                status: common_1.HttpStatus.BAD_REQUEST,
+                                error: 'Esse email já está cadastro na base de dados !'
+                            }, common_1.HttpStatus.BAD_REQUEST);
+                        }
+                        return [4 /*yield*/, this.usersRepository.create(data)];
+                    case 2:
                         user = _a.sent();
                         return [2 /*return*/, user];
                 }

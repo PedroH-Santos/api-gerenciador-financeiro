@@ -10,6 +10,13 @@ export class UsersService {
 
     
     async create(data: CreateUserDTO): Promise<Users> {
+        const emailExist = await this.usersRepository.findByEmail(data.email);
+        if(emailExist){
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error:  'Esse email já está cadastro na base de dados !'
+            }, HttpStatus.BAD_REQUEST);
+        }
         const user = await this.usersRepository.create(data);
         return user;
     }
@@ -25,6 +32,7 @@ export class UsersService {
         const user = await this.usersRepository.findOne(id);
         return user;
     }
+
 
 
     async edit( id: string,  data: EditUserDTO): Promise<Users> {
