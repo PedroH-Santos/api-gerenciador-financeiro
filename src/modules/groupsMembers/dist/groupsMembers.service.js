@@ -55,7 +55,7 @@ var GroupsMembersService = /** @class */ (function () {
     }
     GroupsMembersService.prototype.join = function (data, user) {
         return __awaiter(this, void 0, Promise, function () {
-            var groupExist;
+            var groupExist, usersAlreadyInGroup;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.groupsRepository.findByCode(data.code)];
@@ -67,8 +67,17 @@ var GroupsMembersService = /** @class */ (function () {
                                 error: 'Grupo não encontrado'
                             }, common_1.HttpStatus.BAD_REQUEST);
                         }
-                        return [4 /*yield*/, this.groupsMembersRepository.create(groupExist.id, user)];
+                        return [4 /*yield*/, this.groupsMembersRepository.findOne(user.id, groupExist.id)];
                     case 2:
+                        usersAlreadyInGroup = _a.sent();
+                        if (usersAlreadyInGroup) {
+                            throw new common_1.HttpException({
+                                status: common_1.HttpStatus.BAD_REQUEST,
+                                error: 'Usuário já pertence ao grupo !'
+                            }, common_1.HttpStatus.BAD_REQUEST);
+                        }
+                        return [4 /*yield*/, this.groupsMembersRepository.create(groupExist.id, user)];
+                    case 3:
                         _a.sent();
                         return [2 /*return*/, groupExist];
                 }

@@ -36,7 +36,7 @@ export class AccountsRegistersController {
 
 
     @Get(":groupId")
-    async listAllByGroupId(@Param(":groupId") groupId: string) {
+    async listAllByGroupId(@Param("groupId") groupId: string) {
         const registers = await this.accountsRegistersService.listAllByGroupId(groupId);
         return {
             registers,

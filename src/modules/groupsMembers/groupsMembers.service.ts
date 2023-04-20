@@ -25,6 +25,13 @@ export class GroupsMembersService {
                 error: 'Grupo não encontrado'
             }, HttpStatus.BAD_REQUEST);
         }
+        const usersAlreadyInGroup = await this.groupsMembersRepository.findOne(user.id,groupExist.id);
+        if (usersAlreadyInGroup){
+            throw new HttpException({
+                status: HttpStatus.BAD_REQUEST,
+                error: 'Usuário já pertence ao grupo !'
+            }, HttpStatus.BAD_REQUEST);
+        }
         await this.groupsMembersRepository.create(groupExist.id,user);
         return groupExist;
     }

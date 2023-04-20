@@ -95,7 +95,9 @@ var AccountRegistersRepository = /** @class */ (function () {
                             },
                             where: {
                                 accounts: {
-                                    groupId: groupId
+                                    group: {
+                                        id: groupId
+                                    }
                                 }
                             }
                         })];

@@ -126,7 +126,7 @@ var AccountsRegistersController = /** @class */ (function () {
     ], AccountsRegistersController.prototype, "edit");
     __decorate([
         common_1.Get(":groupId"),
-        __param(0, common_1.Param(":groupId"))
+        __param(0, common_1.Param("groupId"))
     ], AccountsRegistersController.prototype, "listAllByGroupId");
     AccountsRegistersController = __decorate([
         common_1.UseGuards(token_guard_1.JwtAuthGuard),
