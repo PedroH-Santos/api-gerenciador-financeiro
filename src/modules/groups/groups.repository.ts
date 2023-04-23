@@ -124,15 +124,21 @@ export class GroupRepository {
         })
     }
 
-    async filter(data: FilterGroupsDTO): Promise<Groups[]> {
+    async filter(data: FilterGroupsDTO, user: UserTokenDTO): Promise<Groups[]> {
         const groups = await this.prismaService.groups.findMany({
             where: {
                 name: {
                     contains: data.name
                 },
                 code: {
-                    equals: data.code
+                    contains: data.code
+                },
+                GroupsMembers: {
+                    some: {
+                        userId: user.userId
+                    }
                 }
+                
             },
             include: {
                 creator: {

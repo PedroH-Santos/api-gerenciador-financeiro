@@ -37,12 +37,12 @@ export class GroupsService {
         
     }
  
-    async filter(data: FilterGroupsDTO) {
-        const groups = await this.groupsRepository.filter(data);
+    async filter(data: FilterGroupsDTO, user: any) {
+        const groups = await this.groupsRepository.filter(data,user);
         return groups;
     }
    
-    async getOne( id: string) {
+    async getOne(id: string) {
         const group = await this.groupsRepository.findOne(id);
         return group;
     }

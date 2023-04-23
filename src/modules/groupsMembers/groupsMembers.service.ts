@@ -63,6 +63,7 @@ export class GroupsMembersService {
                 error: 'Usuário não encontrado nesse grupo'
             }, HttpStatus.BAD_REQUEST);
         }
+        await this.groupsMembersRepository.delete(groupMembersFind.id);
         return groupExist;
     }
 }

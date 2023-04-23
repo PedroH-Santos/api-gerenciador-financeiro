@@ -133,6 +133,9 @@ var GroupsMembersService = /** @class */ (function () {
                                 error: 'Usuário não encontrado nesse grupo'
                             }, common_1.HttpStatus.BAD_REQUEST);
                         }
+                        return [4 /*yield*/, this.groupsMembersRepository["delete"](groupMembersFind.id)];
+                    case 3:
+                        _a.sent();
                         return [2 /*return*/, groupExist];
                 }
             });

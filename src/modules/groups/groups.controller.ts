@@ -49,8 +49,8 @@ export class GroupController {
         }
     }
     @Get("/filter")
-    async filter(@Query() data: FilterGroupsDTO) {
-        const groups = await this.groupsService.filter(data);
+    async filter(@Query() data: FilterGroupsDTO, @Request() req: any) {
+        const groups = await this.groupsService.filter(data,req.user);
         return {
             groups,
         }
